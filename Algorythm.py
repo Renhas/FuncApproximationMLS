@@ -19,3 +19,10 @@ def coefs_calculate(x:list, y:list, m:int) -> list:
         coefs[row].append((new_y * new_x).sum())
     return coefs
 
+
+def solve_system(system):
+    S = np.array(system)
+    m, n = S.shape
+    A = S[:, 0:n-1]
+    b = S[:, n-1]
+    return np.linalg.solve(A, b)

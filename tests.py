@@ -1,5 +1,6 @@
 import pytest
-from Algorythm import coefs_calculate
+import numpy as np
+from Algorythm import coefs_calculate, solve_system
 
 
 class TestCoefs:
@@ -32,5 +33,39 @@ class TestCoefs:
         with pytest.raises(ValueError):
             coefs_calculate(x, y, m)
 
+
 class TestSolver:
-    
+    @pytest.mark.parametrize(
+        ("system", "expected"), [
+            ([[1, 1, 1, 6],
+              [3, 4, 2, 3],
+              [2, 5, 3, 4]], np.array([2.5, -5.75, 9.25])),
+            ([[0, 0, 1, 3],
+              [1, 2, 3, 5],
+              [1, 0, 0, 8]], np.array([8, -6, 3])),
+            ([[2, 3, 1],
+              [4, 5, 8]], np.array([9.5, -6.0]))
+        ]
+    )
+    def test_good(self, system, expected):
+        assert (~(solve_system(system) == expected)).sum() == 0
+
+    @pytest.mark.parametrize(
+        "system", [
+            ([[1, 2, 3, 2],
+              [4, 5, 6, 3],
+              [7, 8, 9, 4]]),
+            ([[0, 0, 0, 3],
+              [3, 5, 8, 1],
+              [4, 5, 2, 0]]),
+            ([[2, 3, 4, 2],
+              [8, 7, 4, 0]]),
+            ([[4, 5, 3],
+              [6, 9, 2],
+              [0, 1, 1]])
+        ]
+    )
+    def test_bad(self, system):
+        with pytest.raises(np.linalg.LinAlgError):
+            solve_system(system)
+
