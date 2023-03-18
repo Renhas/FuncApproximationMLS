@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from Algorythm import coefs_calculate, solve_system
+from algorythm import *
 
 
 class TestCoefs:
@@ -68,4 +68,55 @@ class TestSolver:
     def test_bad(self, system):
         with pytest.raises(np.linalg.LinAlgError):
             solve_system(system)
+
+
+class TestPolyBuilder:
+    x = sm.symbols("x")
+
+    @pytest.mark.parametrize(
+        ("x_data", "y_data", "degree", "expected"), [
+            ([1, 2, 3], [1, 1, 1], 1, 1),
+            ([1, 2], [2, 5], 1, 3.0000000000000027*x - 1.0000000000000047),
+            ([1, 5, 6, 7], [3, 5, 7, 9], 3, -0.04999999999984518*x**3 + 0.8999999999979575*x**2
+             - 3.3499999999924457*x + 5.4999999999942775)
+        ]
+    )
+    def test_good(self, x_data, y_data, degree, expected):
+        assert build_poly(x_data, y_data, degree) == expected
+
+    @pytest.mark.parametrize(
+        ("x_data", "y_data", "degree"), [
+            ([1, 2], [2, 5], 2)
+        ]
+    )
+    def test_bad(self, x_data, y_data, degree):
+        with pytest.raises(np.linalg.LinAlgError):
+            build_poly(x_data, y_data, degree)
+
+
+class TestStdDev:
+    x = sm.symbols("x")
+
+    @pytest.mark.parametrize(
+        ("x_data", "y_data", "expr", "expected"), [
+            ([1, 2, 3], [1, 1, 1], 2*x, 35),
+            ([1, 2], [5, 0], 3*x, 40),
+            ([0, sm.pi/2, sm.pi], [0, 1, 0], sm.sin(x), 0)
+        ]
+    )
+    def test_good(self, x_data, y_data, expr, expected):
+        assert std_dev(x_data, y_data, expr) == expected
+
+    @pytest.mark.parametrize(
+        ("x_data", "y_data", "expr", "exception"), [
+            ([1, 2], [2], 2*x, ValueError),
+            ([2], [5, 4], 3*x, ValueError),
+            ([3, 2], [5, 6], "3*x + 2", TypeError),
+            ([3, 5], [2, 3], 1, TypeError)
+
+        ]
+    )
+    def test_bad(self, x_data, y_data, expr, exception):
+        with pytest.raises(exception):
+            std_dev(x_data, y_data, expr)
 
