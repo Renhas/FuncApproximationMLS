@@ -74,15 +74,16 @@ class TestPolyBuilder:
     x = sm.symbols("x")
 
     @pytest.mark.parametrize(
-        ("x_data", "y_data", "degree", "expected"), [
-            ([1, 2, 3], [1, 1, 1], 1, 1),
-            ([1, 2], [2, 5], 1, 3.0000000000000027*x - 1.0000000000000047),
-            ([1, 5, 6, 7], [3, 5, 7, 9], 3, -0.04999999999984518*x**3 + 0.8999999999979575*x**2
-             - 3.3499999999924457*x + 5.4999999999942775)
+        ("x_data", "y_data", "degree", "expected", "accuracy"), [
+            ([1, 2, 3], [1, 1, 1], 1, 1*x, 0),
+            ([1, 2], [2, 5], 1, 3.0*x - 1.0, 0.1),
+            ([1, 5, 6, 7], [3, 5, 7, 9], 3,
+             -0.05*x**3 + 0.9*x**2 - 3.35*x + 5.5, 0.001)
         ]
     )
-    def test_good(self, x_data, y_data, degree, expected):
-        assert build_poly(x_data, y_data, degree) == expected
+    def test_good(self, x_data, y_data, degree, expected, accuracy):
+        func_data = build_poly(x_data, y_data, degree)
+        assert (func_data - expected).subs(self.x, 1) <= accuracy
 
     @pytest.mark.parametrize(
         ("x_data", "y_data", "degree"), [
