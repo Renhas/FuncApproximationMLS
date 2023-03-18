@@ -96,7 +96,7 @@ def std_dev(x_data: list, y_data: list, expr: sm.Expr) -> float:
     if not isinstance(expr, sm.Expr):
         raise TypeError(f"expr must be an expression, but it is {type(expr)}")
     result = 0
-    for index, (current_x, current_y) in enumerate(zip(x_data, y_data)):
+    for _, (current_x, current_y) in enumerate(zip(x_data, y_data)):
         func_value = expr.subs(sm.symbols("x"), current_x)
         result += (func_value - current_y)**2
     return result
