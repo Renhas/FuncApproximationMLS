@@ -1,4 +1,3 @@
-import sympy as sm
 import numpy as np
 
 
