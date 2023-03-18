@@ -1,9 +1,26 @@
+"""Реализация аппроксимации функции с помощью метода наименьших квадратов
+
+Функции:
+    coefs_calculate(list, list, int) -> list
+    solve_system(list) -> numpy.ndarray
+    read_data() -> tuple
+    build_poly(list, list, int) -> sympy.Expr
+    std_dev(list, list, sympy.Expr) -> float
+    main()
+"""
 import sympy as sm
 import numpy as np
 from sympy.plotting import plot
 
 
 def coefs_calculate(x_data: list, y_data: list, degree: int) -> list:
+    """ Формирование СЛАУ для нахождения коэффициентов полинома
+
+    :param x_data: список аргументов целевой функции
+    :param y_data: список значений целевой функции
+    :param degree: степень полинома
+    :return: СЛАУ в виде двумерного списка
+    """
     if len(x_data) != len(y_data):
         raise ValueError("x_data and y_data should have same length")
     if degree < 1:
@@ -22,45 +39,75 @@ def coefs_calculate(x_data: list, y_data: list, degree: int) -> list:
 
 
 def solve_system(system: list) -> np.ndarray:
+    """Решение СЛАУ
+
+    :param system: СЛАУ в виде двумерного списка
+    :return: список коэффициентов в виде numpy.ndarray
+    """
     system = np.array(system)
-    row, column = system.shape
+    column = system.shape[1]
     matrix = system[:, 0:column-1]
     vector = system[:, column-1]
     return np.linalg.solve(matrix, vector)
 
 
 def read_data() -> tuple:
-    file = open("Data.txt", "r")
-    x_data = [float(i) for i in file.readline().split(" ")]
-    y_data = [float(i) for i in file.readline().split(" ")]
-    return x_data, y_data
+    """Считывание исходных данных из файла
+    Формат файла: \n
+    x1 x2 x3 ... \n
+    y1 y2 y3 ...
+
+    :return: список значений аргументов функции и список
+    значений функции, объединённые в кортеж
+    """
+    with open("Data.txt", "r", encoding="utf-8") as file:
+        x_data = [float(i) for i in file.readline().split(" ")]
+        y_data = [float(i) for i in file.readline().split(" ")]
+        return x_data, y_data
 
 
 def build_poly(x_data: list, y_data: list, degree: int) -> sm.Expr:
+    """Построение аппроксимирующего полинома
+
+    :param x_data: список значений аргументов исходной функции
+    :param y_data: список значений исходной функции
+    :param degree: степень полинома
+    :return: полином в виде sympy.Expr
+    """
     coefs_matrix = coefs_calculate(x_data, y_data, degree)
     coefs = solve_system(coefs_matrix)
-    x = sm.symbols("x")
-    expr = 0 * x
-    for n in range(degree+1):
-        expr += coefs[n] * x**n
+    x_sym = sm.symbols("x")
+    expr = 0 * x_sym
+    for deg in range(degree+1):
+        expr += coefs[deg] * x_sym ** deg
     return expr
 
 
 def std_dev(x_data: list, y_data: list, expr: sm.Expr) -> float:
+    """Вычисление стандартного отклонения найденного полинома
+
+    :param x_data: список значений аргументов исходной функции
+    :param y_data: список значений исходной функции
+    :param expr: полином в виде sympy.Expr
+    :return: стандартное отклонение
+    """
     if len(x_data) != len(y_data):
         raise ValueError("x and y must be the same length")
     if not isinstance(expr, sm.Expr):
         raise TypeError(f"expr must be an expression, but it is {type(expr)}")
     result = 0
-    for i in range(len(x_data)):
-        current_x = x_data[i]
-        current_y = y_data[i]
+    for index, (current_x, current_y) in enumerate(zip(x_data, y_data)):
         func_value = expr.subs(sm.symbols("x"), current_x)
         result += (func_value - current_y)**2
     return result
 
 
 def main():
+    """Считывание исходных данных, построение полиномов 2 и 3 степени, отрисовка графика
+    и выбор лучшего полинома исходя из их стандартных отклонений
+
+    :return: None
+    """
     x_data, y_data = read_data()
     poly2 = build_poly(x_data, y_data, 2)
     poly3 = build_poly(x_data, y_data, 3)
