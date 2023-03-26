@@ -10,6 +10,7 @@
 """
 import sympy as sm
 import numpy as np
+import matplotlib.pyplot as plt
 from sympy.plotting import plot
 
 
@@ -114,6 +115,7 @@ def main():
     print(poly2, poly3, sep="\n")
     print("2-degree", std_dev(x_data, y_data, poly2))
     print("3-degree", std_dev(x_data, y_data, poly3))
+    plt.style.use('dark_background')
     palette = plot(poly2, show=False, legend=True,
                    markers=[{'args': [x_data, y_data, "ro"]}],
                    size=(7, 7), label="poly2")
@@ -121,7 +123,7 @@ def main():
     palette.append(palette2[0])
     palette.show()
 
-    palette.save("../graphics/mls_all.jpg")
+    palette.save("../graphics/mls_all_dark.jpg")
 
     palette = plot(poly2, show=False, legend=True,
                    markers=[{'args': [x_data, y_data, "ro"]}],
@@ -132,7 +134,7 @@ def main():
     palette.append(palette2[0])
     palette.show()
 
-    palette.save("../graphics/mls_points.jpg")
+    palette.save("../graphics/mls_points_dark.jpg")
 
 
 if __name__ == "__main__":

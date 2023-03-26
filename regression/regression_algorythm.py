@@ -7,6 +7,7 @@
 """
 import numpy as np
 from sympy.plotting import plot
+import matplotlib.pyplot as plt
 import mls.mls_algorythm as mls
 
 
@@ -32,12 +33,14 @@ def main():
         degree += 1
     print(f"Poly: {poly}")
     print(f"eps1: {eps1}, eps2: {eps2}, difference: {abs(eps2-eps1)}")
+    plt.style.use('dark_background')
     palette = plot(poly, show=True, legend=False,
                    size=(7, 7), label=f"poly{degree}",
                    markers=[{'args': [x_data, y_data, "ro"]}],
                    xlim=(min(x_data)-0.1, max(x_data)+0.1),
-                   ylim=(0, 9))
-    palette.save("../graphics/regression.jpg")
+                   ylim=(0, 9),
+                   )
+    palette.save("../graphics/regression_dark.jpg")
 
 
 if __name__ == "__main__":
