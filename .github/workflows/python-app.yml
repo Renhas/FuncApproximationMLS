@@ -43,6 +43,10 @@ jobs:
     - name: set pythonpath
       run: |
         echo "$HOME/.local/bin" >> $GITHUB_PATH
+    - name: Install package
+      run: |
+        pip install -e .
+        python -c "import mls"
     - name: Test with pytest
       run: |      
         pytest --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
