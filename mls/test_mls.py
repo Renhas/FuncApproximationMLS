@@ -1,4 +1,4 @@
-"""Тесты для проверки методов algorythm.py
+"""Тесты для проверки методов mls_algorythm.py
 
 Классы:
     TestCoefs
@@ -9,7 +9,7 @@
 import pytest
 import numpy as np
 import sympy as sm
-from algorythm import coefs_calculate, solve_system, build_poly, std_dev
+from mls_algorythm import coefs_calculate, solve_system, build_poly, std_dev
 
 
 class TestCoefs:

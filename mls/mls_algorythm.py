@@ -51,7 +51,7 @@ def solve_system(system: list) -> np.ndarray:
     return np.linalg.solve(matrix, vector)
 
 
-def read_data() -> tuple:
+def read_data(path: str) -> tuple:
     """Считывание исходных данных из файла
     Формат файла: \n
     x1 x2 x3 ... \n
@@ -60,7 +60,7 @@ def read_data() -> tuple:
     :return: список значений аргументов функции и список
     значений функции, объединённые в кортеж
     """
-    with open("Data.txt", "r", encoding="utf-8") as file:
+    with open(path, "r", encoding="utf-8") as file:
         x_data = [float(i) for i in file.readline().split(" ")]
         y_data = [float(i) for i in file.readline().split(" ")]
         return x_data, y_data
@@ -108,10 +108,12 @@ def main():
 
     :return: None
     """
-    x_data, y_data = read_data()
+    x_data, y_data = read_data("mls_data.txt")
     poly2 = build_poly(x_data, y_data, 2)
     poly3 = build_poly(x_data, y_data, 3)
     print(poly2, poly3, sep="\n")
+    print("2-degree", std_dev(x_data, y_data, poly2))
+    print("3-degree", std_dev(x_data, y_data, poly3))
     palette = plot(poly2, show=False, legend=True,
                    markers=[{'args': [x_data, y_data, "ro"]}],
                    size=(7, 7), label="poly2")
@@ -119,8 +121,18 @@ def main():
     palette.append(palette2[0])
     palette.show()
 
-    print("2-degree", std_dev(x_data, y_data, poly2))
-    print("3-degree", std_dev(x_data, y_data, poly3))
+    palette.save("../graphics/mls_all.jpg")
+
+    palette = plot(poly2, show=False, legend=True,
+                   markers=[{'args': [x_data, y_data, "ro"]}],
+                   size=(7, 7), label="poly2",
+                   xlim=(min(x_data)-0.1, max(x_data)+0.1),
+                   ylim=(0, 12))
+    palette2 = plot(poly3, show=False, legend=True, label="poly3", size=(7, 7))
+    palette.append(palette2[0])
+    palette.show()
+
+    palette.save("../graphics/mls_points.jpg")
 
 
 if __name__ == "__main__":
