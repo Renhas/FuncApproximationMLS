@@ -41,4 +41,4 @@ jobs:
         echo "$HOME/.local/bin" >> $GITHUB_PATH
     - name: Test with pytest
       run: |      
-        ./pytest --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+        ./$NOME pytest --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
