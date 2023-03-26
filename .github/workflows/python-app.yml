@@ -19,7 +19,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: ./mls
+        working-directory: ./
 
     steps:
     - uses: actions/checkout@v3
@@ -33,6 +33,7 @@ jobs:
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install pytest-cov
+        python -c "import mls"
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
