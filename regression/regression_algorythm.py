@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 import mls.mls_algorythm as mls
 
 
+
+
 def eps1_calculate(y_list: list) -> float:
     """Функция вычисления величины отклонения значений от их среднего
 
@@ -33,6 +35,7 @@ def main():
         degree += 1
     print(f"Poly: {poly}")
     print(f"eps1: {eps1}, eps2: {eps2}, difference: {abs(eps2-eps1)}")
+
     plt.style.use('dark_background')
     palette = plot(poly, show=True, legend=False,
                    size=(7, 7), label=f"poly{degree}",

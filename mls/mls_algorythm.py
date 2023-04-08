@@ -9,9 +9,9 @@
     main()
 """
 import sympy as sm
+from sympy import lambdify
 import numpy as np
 import matplotlib.pyplot as plt
-from sympy.plotting import plot
 
 
 def coefs_calculate(x_data: list, y_data: list, degree: int) -> list:
@@ -103,6 +103,31 @@ def std_dev(x_data: list, y_data: list, expr: sm.Expr) -> float:
     return result
 
 
+# pylint: disable=too-many-instance-attributes
+def plot(x_val: np.ndarray, np_poly2, np_poly3, x_data: list, y_data: list):
+    """
+    Отрисовка графика двух полиномов и точек
+    :param x_val: диапазон аргумента
+    :param np_poly2: функция первого полинома
+    :param np_poly3: функция второго полинома
+    :param x_data: координаты по оси абсцисс исходных точек
+    :param y_data: координаты по оси ординат исходных точек
+    """
+    fig = plt.figure(figsize=(7, 7))
+    ax = fig.add_subplot(1, 1, 1)
+
+    ax.spines['left'].set_position(("data", 0.0))
+    ax.spines['bottom'].set_position(("data", 0.0))
+    ax.spines['right'].set_color('none')
+    ax.spines['top'].set_color('none')
+
+    ax.plot(x_val, np_poly2(x_val), '--', label="Poly2")
+    ax.plot(x_val, np_poly3(x_val), label="Poly3")
+    ax.plot(x_data, y_data, "ro")
+
+    ax.legend()
+
+
 def main():
     """Считывание исходных данных, построение полиномов 2 и 3 степени, отрисовка графика
     и выбор лучшего полинома исходя из их стандартных отклонений
@@ -115,26 +140,24 @@ def main():
     print(poly2, poly3, sep="\n")
     print("2-degree", std_dev(x_data, y_data, poly2))
     print("3-degree", std_dev(x_data, y_data, poly3))
+
+    np_poly2 = lambdify(tuple(poly2.atoms(sm.Symbol)), poly2, modules=['numpy'])
+    np_poly3 = lambdify(tuple(poly3.atoms(sm.Symbol)), poly3, modules=['numpy'])
+
+    x_val = np.linspace(-10, 10, 200)
+    plot(x_val, np_poly2, np_poly3, x_data, y_data)
+    plt.savefig("../graphics/mls_all.jpg")
     plt.style.use('dark_background')
-    palette = plot(poly2, show=False, legend=True,
-                   markers=[{'args': [x_data, y_data, "ro"]}],
-                   size=(7, 7), label="poly2")
-    palette2 = plot(poly3, show=False, legend=True, label="poly3", size=(7, 7))
-    palette.append(palette2[0])
-    palette.show()
+    plot(x_val, np_poly2, np_poly3, x_data, y_data)
+    plt.savefig("../graphics/mls_all_dark.jpg")
 
-    palette.save("../graphics/mls_all_dark.jpg")
-
-    palette = plot(poly2, show=False, legend=True,
-                   markers=[{'args': [x_data, y_data, "ro"]}],
-                   size=(7, 7), label="poly2",
-                   xlim=(min(x_data)-0.1, max(x_data)+0.1),
-                   ylim=(0, 12))
-    palette2 = plot(poly3, show=False, legend=True, label="poly3", size=(7, 7))
-    palette.append(palette2[0])
-    palette.show()
-
-    palette.save("../graphics/mls_points_dark.jpg")
+    x_val = np.linspace(0,2.1, 100)
+    plt.style.use('default')
+    plot(x_val, np_poly2, np_poly3, x_data, y_data)
+    plt.savefig("../graphics/mls_points.jpg")
+    plt.style.use('dark_background')
+    plot(x_val, np_poly2, np_poly3, x_data, y_data)
+    plt.savefig("../graphics/mls_points_dark.jpg")
 
 
 if __name__ == "__main__":
