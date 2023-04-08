@@ -114,18 +114,18 @@ def plot(x_val: np.ndarray, np_poly2, np_poly3, x_data: list, y_data: list):
     :param y_data: координаты по оси ординат исходных точек
     """
     fig = plt.figure(figsize=(7, 7))
-    ax = fig.add_subplot(1, 1, 1)
+    axis = fig.add_subplot(1, 1, 1)
 
-    ax.spines['left'].set_position(("data", 0.0))
-    ax.spines['bottom'].set_position(("data", 0.0))
-    ax.spines['right'].set_color('none')
-    ax.spines['top'].set_color('none')
+    axis.spines['left'].set_position(("data", 0.0))
+    axis.spines['bottom'].set_position(("data", 0.0))
+    axis.spines['right'].set_color('none')
+    axis.spines['top'].set_color('none')
 
-    ax.plot(x_val, np_poly2(x_val), '--', label="Poly2")
-    ax.plot(x_val, np_poly3(x_val), label="Poly3")
-    ax.plot(x_data, y_data, "ro")
+    axis.plot(x_val, np_poly2(x_val), '--', label="Poly2")
+    axis.plot(x_val, np_poly3(x_val), label="Poly3")
+    axis.plot(x_data, y_data, "ro")
 
-    ax.legend()
+    axis.legend()
 
 
 def main():

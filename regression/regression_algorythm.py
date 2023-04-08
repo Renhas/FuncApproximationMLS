@@ -11,8 +11,6 @@ import matplotlib.pyplot as plt
 import mls.mls_algorythm as mls
 
 
-
-
 def eps1_calculate(y_list: list) -> float:
     """Функция вычисления величины отклонения значений от их среднего
 
