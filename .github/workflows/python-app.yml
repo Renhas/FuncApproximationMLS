@@ -3,11 +3,7 @@
 
 name: Python application
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push]
 
 permissions:
   contents: read
@@ -17,10 +13,6 @@ jobs:
     
     runs-on: ubuntu-latest
     
-    defaults:
-      run:
-        working-directory: ./
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
@@ -33,7 +25,6 @@ jobs:
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install pytest-cov
-        python -c "import mls"
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -43,10 +34,6 @@ jobs:
     - name: set pythonpath
       run: |
         echo "$HOME/.local/bin" >> $GITHUB_PATH
-    - name: Install package
-      run: |
-        pip install -e .
-        python -c "import mls"
     - name: Test with pytest
       run: |      
         pytest --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
