@@ -40,6 +40,7 @@ def func2(x_value: float, _: list) -> float:
     return -0.01 * np.e ** (-0.8 * x_value)
 
 
+# pylint: disable=too-few-public-methods
 class BaseAlgorythm(ABC):
     """Абстрактный класс, реализующий общую схему алгоритма
 
@@ -90,10 +91,10 @@ class BaseAlgorythm(ABC):
         :param func: функция из СДУ
         :return: множитель
         """
-        pass
 
 
 class Euler(BaseAlgorythm):
+    """Метод Эйлера приближенного решения СДУ"""
     def _step_function(self, func: typing.Callable) -> float:
         """Реализация множителя для метода Эйлера
 
@@ -104,6 +105,7 @@ class Euler(BaseAlgorythm):
 
 
 class RungeKutta(BaseAlgorythm):
+    """Метод Рунге-Кутта приближенного решения СДУ"""
     def _step_function(self, func: typing.Callable) -> float:
         """Реализация множителя для метода Рунге-Кутта
 
@@ -125,6 +127,7 @@ class RungeKutta(BaseAlgorythm):
         return f_value / 6
 
 
+# pylint: disable=no-member
 def plot_results(algorythm: BaseAlgorythm, params: list):
     """Отрисовка результатов работы алгоритма
 
