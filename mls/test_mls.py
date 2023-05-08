@@ -9,7 +9,7 @@
 import pytest
 import numpy as np
 import sympy as sm
-from mls_algorythm import coefs_calculate, solve_system, build_poly, std_dev
+from mls.mls_algorythm import coefs_calculate, solve_system, build_poly, std_dev
 
 
 class TestCoefs:

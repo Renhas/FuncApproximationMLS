@@ -5,7 +5,7 @@
     test_eps1(list, float, float) - тестирование вычисления отклонения
 """
 import pytest
-from regression_algorythm import eps1_calculate
+from regression.regression_algorythm import eps1_calculate
 
 
 @pytest.mark.parametrize(
