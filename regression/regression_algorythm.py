@@ -39,7 +39,7 @@ def main():
                    size=(7, 7), label=f"poly{degree}",
                    markers=[{'args': [x_data, y_data, "ro"]}],
                    xlim=(min(x_data)-0.1, max(x_data)+0.1),
-                   ylim=(0, 9),
+                   ylim=(-5, 9),
                    )
     palette.save("../graphics/regression_dark.jpg")
 
