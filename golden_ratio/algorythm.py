@@ -65,6 +65,7 @@ def main():
 
     minimum = golden_algorythm(-1, 0)
     plt.plot(minimum, function(minimum), "ro")
+    plt.savefig("../graphics/golden.jpg")
     plt.show()
 
 

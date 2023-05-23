@@ -128,11 +128,12 @@ class RungeKutta(BaseAlgorythm):
 
 
 # pylint: disable=no-member
-def plot_results(algorythm: BaseAlgorythm, params: list):
+def plot_results(algorythm: BaseAlgorythm, params: list, path: str = ""):
     """Отрисовка результатов работы алгоритма
 
     :param algorythm: алгоритм
     :param params: список параметров
+    :param path: путь для сохранения
     """
     x_values = []
     y_values = []
@@ -150,6 +151,8 @@ def plot_results(algorythm: BaseAlgorythm, params: list):
     plt.plot(x_values, y_values[:, 0], "ro")
     plt.plot(x_values, y_values[:, 1], "go")
     plt.legend(["y1", "y2"])
+    if path:
+        plt.savefig(path)
     plt.show()
 
 
@@ -158,13 +161,15 @@ def main():
     start_points = (0, 0.5)
     functions = (func1, func2)
     params = [start_points, 0.1, (0, 3)]
-    plot_results(Euler(functions), params)
+    plot_results(Euler(functions), params, path="../graphics/euler_0.1.jpg")
     params[1] = 0.05
-    plot_results(Euler(functions), params)
+    plot_results(Euler(functions), params, path="../graphics/euler_0.05.jpg")
     params[1] = 0.1
-    plot_results(RungeKutta(functions), params)
+    plot_results(RungeKutta(functions), params,
+                 path="../graphics/runge_0.1.jpg")
     params[1] = 0.05
-    plot_results(RungeKutta(functions), params)
+    plot_results(RungeKutta(functions), params,
+                 path="../graphics/runge_0.05.jpg")
 
 
 if __name__ == "__main__":
