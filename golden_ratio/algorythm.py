@@ -4,9 +4,9 @@
 from typing import Union
 import matplotlib.pyplot as plt
 import numpy as np
-a_value = 4.0
-b_value = -0.25
-gs_value = 0.618
+A_VALUE = 4.0
+B_VALUE = -0.25
+GS_VALUE = 0.618
 
 
 def function(x_value: Union[float, np.ndarray]) -> float:
@@ -15,7 +15,7 @@ def function(x_value: Union[float, np.ndarray]) -> float:
     :param x_value: одно или несколько значений
     :return: одно или несколько значений
     """
-    return x_value ** 2 + a_value * np.exp(b_value * x_value)
+    return x_value ** 2 + A_VALUE * np.exp(B_VALUE * x_value)
 
 
 def golden_algorythm(start: float, end: float, eps: float = 0.001) -> float:
@@ -46,12 +46,12 @@ def golden_algorythm(start: float, end: float, eps: float = 0.001) -> float:
 
 def calculate_golden_right(start: float, end: float) -> float:
     """Вычисление правой точки золотого сечения"""
-    return start + gs_value * (end - start)
+    return start + GS_VALUE * (end - start)
 
 
 def calculate_golden_left(start: float, end: float) -> float:
     """Вычисление левой точки золотого сечения"""
-    return end - gs_value * (end - start)
+    return end - GS_VALUE * (end - start)
 
 
 def main():
