@@ -41,7 +41,7 @@ def golden_algorythm(start: float, end: float, eps: float = 0.001) -> float:
             current_left = current_right
             current_right = calculate_golden_right(current_a, current_b)
 
-    return (current_b - current_a) * 0.5
+    return (current_b + current_a) * 0.5
 
 
 def calculate_golden_right(start: float, end: float) -> float:

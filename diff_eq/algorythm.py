@@ -149,7 +149,7 @@ def plot_results(algorythm: BaseAlgorythm, params: list, path: str = ""):
     y_values = np.array(y_values)
 
     plt.plot(x_values, y_values[:, 0], "ro")
-    plt.plot(x_values, y_values[:, 1], "go")
+    plt.plot(x_values, y_values[:, 1], "g*")
     plt.legend(["y1", "y2"])
     if path:
         plt.savefig(path)
